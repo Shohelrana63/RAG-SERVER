@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_access_expires_minutes: int = 15
     client_url: str = "http://localhost:3000"
+    storage_local_path: str = "./uploads"
+    max_upload_mb: int = 25
 
 
 settings = Settings()
