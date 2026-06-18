@@ -18,7 +18,7 @@ class DocumentService:
 
     def _to_out(self, doc: PdfDocument) -> DocumentOut:
         return DocumentOut(
-            _id=str(doc.id),
+            id=str(doc.id),
             title=doc.original_name,
             sizeBytes=doc.size_bytes,
             pageCount=None,
@@ -53,7 +53,7 @@ class DocumentService:
             filename=stored_name,
             original_name=file.filename,
             size_bytes=len(data),
-            status="processing",
+            status="ready",  # TODO: set "processing" once ingestion pipeline is implemented
         )
         await doc.insert()
         return self._to_out(doc)

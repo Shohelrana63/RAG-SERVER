@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
+from app.api.deps import get_current_user
 from app.core.security import create_access_token, hash_password, verify_password
 from app.models.user import User
 from app.schemas.auth import AuthData, LoginRequest, RegisterRequest, UserOut
@@ -58,6 +59,13 @@ async def login(body: LoginRequest):
             user=_user_out(user),
         ).model_dump(),
     }
+
+
+@router.delete("/me")
+async def delete_user(user: User = Depends(get_current_user)):
+    await user.delete()
+    return {"success": True, "data": None}
+
 
 @router.get("/all-users")
 async def all_users():

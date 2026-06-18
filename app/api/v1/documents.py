@@ -16,7 +16,7 @@ async def upload_document(
 ):
     try:
         doc = await document_service.upload(user, file)
-        return {"success": True, "data": doc.model_dump()}
+        return {"success": True, "data": doc.model_dump(by_alias=True)}
     except ValueError as exc:
         return JSONResponse(
             status_code=400,
@@ -27,7 +27,7 @@ async def upload_document(
 @router.get("")
 async def list_documents(user: User = Depends(get_current_user)):
     items = await document_service.list_by_user(user)
-    return {"success": True, "data": {"items": [d.model_dump() for d in items]}}
+    return {"success": True, "data": {"items": [d.model_dump(by_alias=True) for d in items]}}
 
 
 @router.get("/{doc_id}")
@@ -38,7 +38,7 @@ async def get_document(doc_id: str, user: User = Depends(get_current_user)):
             status_code=404,
             content={"success": False, "error": {"message": "Document not found."}},
         )
-    return {"success": True, "data": doc.model_dump()}
+    return {"success": True, "data": doc.model_dump(by_alias=True)}
 
 
 @router.get("/{doc_id}/status")

@@ -7,7 +7,8 @@ class Settings(BaseSettings):
     mongodb_uri: str = "mongodb://localhost:27017/ai_pdf_assistant"
     jwt_access_secret: str = "change_me_access_secret"
     jwt_algorithm: str = "HS256"
-    jwt_access_expires_minutes: int = 15
+    jwt_access_expires_minutes: int = 60
+    jwt_refresh_expires_days: int = 7
     client_url: str = "http://localhost:3000"
     storage_local_path: str = "./uploads"
     max_upload_mb: int = 25

@@ -1,10 +1,12 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class DocumentOut(BaseModel):
-    _id: str
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: str = Field(alias="_id")
     title: str
     sizeBytes: int
     pageCount: int | None = None
