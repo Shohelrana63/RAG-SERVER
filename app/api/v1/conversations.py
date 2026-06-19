@@ -44,6 +44,17 @@ async def get_conversation(conv_id: str, user: User = Depends(get_current_user))
     return {"success": True, "data": conv.model_dump(by_alias=True)}
 
 
+@router.delete("/{conv_id}")
+async def delete_conversation(conv_id: str, user: User = Depends(get_current_user)):
+    deleted = await chat_service.delete_by_user(user, conv_id)
+    if not deleted:
+        return JSONResponse(
+            status_code=404,
+            content={"success": False, "error": {"message": "Conversation not found."}},
+        )
+    return {"success": True, "data": None}
+
+
 @router.get("/{conv_id}/messages")
 async def list_messages(conv_id: str, user: User = Depends(get_current_user)):
     messages = await chat_service.list_messages(user, conv_id)

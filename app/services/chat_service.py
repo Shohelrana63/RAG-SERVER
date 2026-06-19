@@ -92,6 +92,14 @@ class ChatService:
         ).to_list()
         return [self._message_out(m) for m in messages]
 
+    async def delete_by_user(self, user: User, conv_id: str) -> bool:
+        conv = await Conversation.get(conv_id)
+        if not conv or conv.user_id != user.id:
+            return False
+        await Message.find(Message.conversation_id == conv.id).delete()
+        await conv.delete()
+        return True
+
     async def _build_sources(self, conv: Conversation) -> list[dict]:
         sources: list[dict] = []
         for i, doc_id in enumerate(conv.document_ids):
